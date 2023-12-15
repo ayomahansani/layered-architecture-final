@@ -81,6 +81,8 @@ public class ManageCustomersFormController {
             }*/
 
 
+            System.out.printf("ok ");
+
             CustomerDAOImpl customerDAO = new CustomerDAOImpl();
             ArrayList<CustomerDTO> allCustomers = customerDAO.getAllCustomers();
 
