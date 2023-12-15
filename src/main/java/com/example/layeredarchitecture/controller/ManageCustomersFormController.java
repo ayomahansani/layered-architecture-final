@@ -89,6 +89,7 @@ public class ManageCustomersFormController {
                 tblCustomers.getItems().add(customerTM);
             }
 
+            System.out.printf("ok");
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
