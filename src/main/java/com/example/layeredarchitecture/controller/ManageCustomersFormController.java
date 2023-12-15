@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.CustomerDAO;
 import com.example.layeredarchitecture.dao.CustomerDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
@@ -27,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 
 
-
 public class ManageCustomersFormController {
     public AnchorPane root;
     public TextField txtCustomerName;
@@ -37,6 +37,8 @@ public class ManageCustomersFormController {
     public TextField txtCustomerAddress;
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
+
+    CustomerDAO customerDAO = new CustomerDAOImpl();    //dependency injection - > property injection
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -82,7 +84,7 @@ public class ManageCustomersFormController {
 
 
 
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
             ArrayList<CustomerDTO> allCustomers = customerDAO.getAllCustomers();
 
             for(CustomerDTO c : allCustomers){
@@ -171,7 +173,7 @@ public class ManageCustomersFormController {
 
                 tblCustomers.getItems().add(new CustomerTM(id, name, address));*/
 
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
                 boolean isSaved = customerDAO.saveCustomer(customerDTO);
 
@@ -202,7 +204,7 @@ public class ManageCustomersFormController {
                 pstm.setString(3, id);
                 pstm.executeUpdate();*/
 
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
                 CustomerDTO customerDTO = new CustomerDTO(id, name, address);
                 boolean isUpdated = customerDAO.updateCustomer(customerDTO);
 
@@ -229,7 +231,7 @@ public class ManageCustomersFormController {
         pstm.setString(1, id);
         return pstm.executeQuery().next();*/
 
-        CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+        //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
         boolean isExited = customerDAO.existCustomer(id);
 
         return isExited;
@@ -251,7 +253,7 @@ public class ManageCustomersFormController {
             pstm.setString(1, id);
             pstm.executeUpdate();*/
 
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
             customerDAO.deleteCustomer(id);
 
                 tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
@@ -280,7 +282,7 @@ public class ManageCustomersFormController {
                 return "C00-001";
             }*/
 
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
             String customerId = customerDAO.generateNextCustomerId();
             return customerId;
 

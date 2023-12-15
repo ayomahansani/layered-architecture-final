@@ -6,7 +6,9 @@ import com.example.layeredarchitecture.model.CustomerDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CustomerDAOImpl {
+public class CustomerDAOImpl implements CustomerDAO{
+
+    @Override
     public ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -22,6 +24,7 @@ public class CustomerDAOImpl {
         return allCustomer;
     }
 
+    @Override
     public boolean saveCustomer(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -33,6 +36,7 @@ public class CustomerDAOImpl {
 
     }
 
+    @Override
     public boolean updateCustomer(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -43,6 +47,7 @@ public class CustomerDAOImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -51,6 +56,7 @@ public class CustomerDAOImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public String generateNextCustomerId() throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -66,6 +72,7 @@ public class CustomerDAOImpl {
 
     }
 
+    @Override
     public boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();

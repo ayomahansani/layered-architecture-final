@@ -6,7 +6,9 @@ import com.example.layeredarchitecture.model.ItemDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ItemDAOImpl {
+public class ItemDAOImpl implements ItemDAO{
+
+    @Override
 
     public ArrayList<ItemDTO> getAllItems() throws SQLException, ClassNotFoundException {
 
@@ -23,6 +25,7 @@ public class ItemDAOImpl {
         return allItems;
     }
 
+    @Override
     public boolean saveItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -35,6 +38,7 @@ public class ItemDAOImpl {
 
     }
 
+    @Override
     public boolean updateItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -46,6 +50,7 @@ public class ItemDAOImpl {
         return pstm.executeUpdate()>0;
     }
 
+    @Override
     public boolean deleteItem(String code) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -54,6 +59,7 @@ public class ItemDAOImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean exitItem(String code) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -62,6 +68,7 @@ public class ItemDAOImpl {
         return pstm.executeQuery().next();
     }
 
+    @Override
     public String generateNextItemCode() throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();

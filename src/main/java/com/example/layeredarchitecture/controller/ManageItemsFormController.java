@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.ItemDAO;
 import com.example.layeredarchitecture.dao.ItemDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -36,6 +37,8 @@ public class ManageItemsFormController {
     public TableView<ItemTM> tblItems;
     public TextField txtUnitPrice;
     public JFXButton btnAddNewItem;
+
+    ItemDAO itemDAO = new ItemDAOImpl();    //property injection
 
     public void initialize() {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -79,7 +82,7 @@ public class ManageItemsFormController {
                 tblItems.getItems().add(new ItemTM(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
             }*/
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+            //ItemDAO itemDAO = new ItemDAOImpl();    //here ItemDAO is the interface
             ArrayList<ItemDTO> allItems = itemDAO.getAllItems();
 
             for(ItemDTO itemDTO : allItems){
@@ -148,7 +151,7 @@ public class ManageItemsFormController {
             pstm.setString(1, code);
             pstm.executeUpdate();*/
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+            //ItemDAO itemDAO = new ItemDAOImpl();    //here ItemDAO is the interface
             boolean isDeleted = itemDAO.deleteItem(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
@@ -200,7 +203,7 @@ public class ManageItemsFormController {
                 pstm.executeUpdate();
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));*/
 
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+                //ItemDAO itemDAO = new ItemDAOImpl();    //here ItemDAO is the interface
                 ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
                 boolean isSaved = itemDAO.saveItem(itemDTO);
 
@@ -229,7 +232,7 @@ public class ManageItemsFormController {
                 pstm.setString(4, code);
                 pstm.executeUpdate();*/
 
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+                //ItemDAO itemDAO = new ItemDAOImpl();    //here ItemDAO is the interface
                 ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
                 boolean isUpdated = itemDAO.updateItem(itemDTO);
 
@@ -256,7 +259,7 @@ public class ManageItemsFormController {
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
 
-        ItemDAOImpl itemDAO = new ItemDAOImpl();
+        //ItemDAO itemDAO = new ItemDAOImpl();    //here ItemDAO is the interface
         boolean isExited = itemDAO.exitItem(code);
 
         return isExited;
@@ -275,7 +278,7 @@ public class ManageItemsFormController {
                 return "I00-001";
             }*/
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+            //ItemDAO itemDAO = new ItemDAOImpl();    //here ItemDAO is the interface
             String newId = itemDAO.generateNextItemCode();
 
             return newId;
