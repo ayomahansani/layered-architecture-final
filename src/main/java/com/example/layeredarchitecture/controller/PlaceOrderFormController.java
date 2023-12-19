@@ -1,10 +1,16 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.dao.*;
+import com.example.layeredarchitecture.dao.custom.CustomerDAO;
+import com.example.layeredarchitecture.dao.custom.ItemDAO;
+import com.example.layeredarchitecture.dao.custom.OrderDAO;
+import com.example.layeredarchitecture.dao.custom.OrderDetailsDAO;
+import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.OrderDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.OrderDetailsDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
-import com.example.layeredarchitecture.model.OrderDTO;
 import com.example.layeredarchitecture.model.OrderDetailDTO;
 import com.example.layeredarchitecture.view.tdm.OrderDetailTM;
 import com.jfoenix.controls.JFXButton;
@@ -119,7 +125,7 @@ public class PlaceOrderFormController {
                         //---------------Above all are done in CustomerDAOImpl--------------
 
                         //CustomerDAO customerDAO = new CustomerDAOImpl();
-                        CustomerDTO customerDTO = customerDAO.searchCustomer(newValue);
+                        CustomerDTO customerDTO = customerDAO.search(newValue);
 
                         txtCustomerName.setText(customerDTO.getName());
 
@@ -160,7 +166,7 @@ public class PlaceOrderFormController {
                     //--------------Above all are done in ItemDAOImpl---------------
 
                     //ItemDAO itemDAO = new ItemDAOImpl();
-                    ItemDTO item = itemDAO.searchItem(newItemCode);
+                    ItemDTO item = itemDAO.search(newItemCode);
 
                     txtDescription.setText(item.getDescription());
                     txtUnitPrice.setText(item.getUnitPrice().setScale(2).toString());
@@ -213,7 +219,7 @@ public class PlaceOrderFormController {
         //---------------Above all are done in ItemDAOImpl---------------
 
         //ItemDAO itemDAO = new ItemDAOImpl();
-        boolean isExist = itemDAO.exitItem(code);
+        boolean isExist = itemDAO.exist(code);
         return isExist;
     }
 
@@ -226,7 +232,7 @@ public class PlaceOrderFormController {
         //---------------Above all are done in CustomerDAOImpl---------------
 
         //CustomerDAO customerDAO = new CustomerDAOImpl();
-        boolean isExist = customerDAO.existCustomer(id);
+        boolean isExist = customerDAO.exist(id);
         return isExist;
     }
 
@@ -241,7 +247,7 @@ public class PlaceOrderFormController {
             //---------------Above all are done in OrderDAOImpl---------------
 
             //OrderDAO orderDAO = new OrderDAOImpl();
-            String newOrderId = orderDAO.generateNextOrderId();
+            String newOrderId = orderDAO.generateNextId();
             return newOrderId;
 
         } catch (SQLException e) {
@@ -266,7 +272,7 @@ public class PlaceOrderFormController {
             //---------------Above all are done in CustomerDAOImpl---------------
 
             //CustomerDAO customerDAO = new CustomerDAOImpl();
-            ArrayList<CustomerDTO> allCustomers = customerDAO.getAllCustomers();
+            ArrayList<CustomerDTO> allCustomers = customerDAO.getAll();
 
             for(CustomerDTO customerDTO : allCustomers){
                 cmbCustomerId.getItems().add(customerDTO.getId());
@@ -293,7 +299,7 @@ public class PlaceOrderFormController {
             //---------------Above all are done in ItemDAOImpl---------------
 
             //ItemDAO itemDAO = new ItemDAOImpl();
-            ArrayList<ItemDTO> allItems = itemDAO.getAllItems();
+            ArrayList<ItemDTO> allItems = itemDAO.getAll();
 
             for(ItemDTO itemDTO : allItems){
                 cmbItemCode.getItems().add(itemDTO.getCode());
@@ -399,7 +405,7 @@ public class PlaceOrderFormController {
             /*PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
             stm.setString(1, orderId);*/
 
-            boolean isExisted = orderDAO.checkOrderExist(orderId);
+            boolean isExisted = orderDAO.exist(orderId);
 
             //*if order id already exist*//*
             if (isExisted) {
@@ -412,7 +418,7 @@ public class PlaceOrderFormController {
             stm.setDate(2, Date.valueOf(orderDate));
             stm.setString(3, customerId);*/
 
-            boolean isSaved = orderDAO.saveOrder(orderId, orderDate, customerId);
+            boolean isSaved = orderDAO.save(orderId, orderDate, customerId);
 
 
             if (!isSaved) {
@@ -429,7 +435,7 @@ public class PlaceOrderFormController {
                 stm.setBigDecimal(3, detail.getUnitPrice());
                 stm.setInt(4, detail.getQty());*/
 
-                boolean isOrderDetailsSaved = orderDetailsDAO.insertOrderDetails(orderId, detail.getItemCode(), detail.getUnitPrice(), detail.getQty());
+                boolean isOrderDetailsSaved = orderDetailsDAO.save(orderId, detail.getItemCode(),detail.getUnitPrice(),detail.getQty());
 
                 if (!isOrderDetailsSaved) {
                     connection.rollback();
@@ -447,7 +453,7 @@ public class PlaceOrderFormController {
                 pstm.setInt(3, item.getQtyOnHand());
                 pstm.setString(4, item.getCode());*/
 
-                boolean isUpdated = itemDAO.updateItem(item);
+                boolean isUpdated = itemDAO.update(item);
 
                 if (!isUpdated) {
                     connection.rollback();
@@ -482,7 +488,7 @@ public class PlaceOrderFormController {
             //---------------Above all are done in ItemDAOImpl---------------
 
             //ItemDAO itemDAO = new ItemDAOImpl();
-            ItemDTO itemDTO = itemDAO.searchItem(code);
+            ItemDTO itemDTO = itemDAO.search(code);
             return  itemDTO;
 
         } catch (SQLException e) {

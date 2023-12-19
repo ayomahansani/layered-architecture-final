@@ -1,8 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.dao.CustomerDAO;
-import com.example.layeredarchitecture.dao.CustomerDAOImpl;
-import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.dao.custom.CustomerDAO;
+import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.jfoenix.controls.JFXButton;
@@ -85,7 +84,7 @@ public class ManageCustomersFormController {
 
 
             //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
-            ArrayList<CustomerDTO> allCustomers = customerDAO.getAllCustomers();
+            ArrayList<CustomerDTO> allCustomers = customerDAO.getAll();
 
             for(CustomerDTO c : allCustomers){
                 CustomerTM customerTM = new CustomerTM(c.getId(), c.getName(), c.getAddress());
@@ -175,7 +174,7 @@ public class ManageCustomersFormController {
 
                 //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
-                boolean isSaved = customerDAO.saveCustomer(customerDTO);
+                boolean isSaved = customerDAO.save(customerDTO);
 
                 if(isSaved){
                     tblCustomers.getItems().add(new CustomerTM(id, name, address));
@@ -206,7 +205,7 @@ public class ManageCustomersFormController {
 
                 //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
                 CustomerDTO customerDTO = new CustomerDTO(id, name, address);
-                boolean isUpdated = customerDAO.updateCustomer(customerDTO);
+                boolean isUpdated = customerDAO.update(customerDTO);
 
 
             } catch (SQLException e) {
@@ -232,7 +231,7 @@ public class ManageCustomersFormController {
         return pstm.executeQuery().next();*/
 
         //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
-        boolean isExited = customerDAO.existCustomer(id);
+        boolean isExited = customerDAO.exist(id);
 
         return isExited;
     }
@@ -254,7 +253,7 @@ public class ManageCustomersFormController {
             pstm.executeUpdate();*/
 
             //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
-            customerDAO.deleteCustomer(id);
+            customerDAO.delete(id);
 
                 tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
                 tblCustomers.getSelectionModel().clearSelection();
@@ -283,7 +282,7 @@ public class ManageCustomersFormController {
             }*/
 
             //CustomerDAO customerDAO = new CustomerDAOImpl();    //here CustomerDAO is the interface
-            String customerId = customerDAO.generateNextCustomerId();
+            String customerId = customerDAO.generateNextId();
             return customerId;
 
         } catch (SQLException e) {
