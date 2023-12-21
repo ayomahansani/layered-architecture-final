@@ -21,7 +21,7 @@ public class SQLUtill {
         if(sql.startsWith("SELECT")){
             return (T) pstm.executeQuery();
         }else{
-            return (T) (Boolean) (pstm.executeUpdate()>0);  //cast to non-primitive data type
+            return (T) (Boolean) (pstm.executeUpdate()>0);  //cast to non-primitive data type ( boolean -> Boolean ) Because generics are only related to non-primitive data types
         }
     }
 }
